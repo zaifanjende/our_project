@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Edit Tank: {{ water_tank.tank_name }}{% endblock %}
+
+{% block content %}
+<div class="container form-container">
+    <h2 class="text-center mb-4">Edit Water Tank: {{ water_tank.tank_name }} ({{ farm.name }})</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success w-100 mt-3">Update Tank</button>
+    </form>
+    <p class="text-center mt-3">
+        <a href="{% url 'water_tank_detail' farm_pk=farm.pk pk=water_tank.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </p>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Your Farms{% endblock %}
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">Your Registered Farms</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a href="{% url 'farm_add' %}" class="btn btn-primary">
+            <i class="bi bi-plus-circle me-2"></i> Add New Farm
+        </a>
+    </div>
+
+    {% if farms %}
+        <div class="list-group">
+            {% for farm in farms %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5 class="mb-1">{{ farm.name }}</h5>
+                        <small class="text-muted">{{ farm.location }}</small>
+                        <p class="mb-1">Contact: {{ farm.contact_person }} ({{ farm.contact_number }})</p>
+                        <span class="badge bg-info text-dark">{{ farm.system_status }}</span>
+                    </div>
+                   <div>
+    <a href="{% url 'farm_detail' pk=farm.pk %}" class="btn btn-sm btn-outline-secondary me-2">Details</a>
+    <a href="{% url 'farm_edit' pk=farm.pk %}" class="btn btn-sm btn-outline-primary me-2">Edit</a>
+    <a href="{% url 'farm_delete' pk=farm.pk %}" class="btn btn-sm btn-outline-danger">Delete</a>
+</div>
+
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            You haven't added any farms yet. Click the button above to add your first farm!
+        </div>
+    {% endif %}
+
+    <p class="text-center mt-4">
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Back to Dashboard</a>
+    </p>
+</div>
+{% endblock %}

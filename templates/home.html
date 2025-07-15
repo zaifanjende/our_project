@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}AgriFlow - Smart Irrigation for a Greener Future{% endblock %}
+
+{% block content %}
+<div class="jumbotron text-center bg-light p-5 my-4 rounded">
+    <h1 class="display-4">Welcome to AgriFlow Smart Irrigation</h1>
+    <p class="lead">Optimize your farm's water usage with real-time monitoring and intelligent automation.</p>
+    <hr class="my-4">
+    <p>From small gardens to large agricultural lands, AgriFlow helps you grow more with less water, ensuring healthier crops and a sustainable future.</p>
+    <a class="btn btn-primary btn-lg" href="{% url 'dashboard' %}" role="button">Go to Dashboard</a>
+    {% if not user.is_authenticated %}
+        <a class="btn btn-outline-success btn-lg ms-3" href="{% url 'register' %}" role="button">Register Now</a>
+    {% endif %}
+</div>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Why Choose AgriFlow?</h2>
+    <div class="row text-center">
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-success"><i class="bi bi-water me-2"></i>Water Efficiency</h3>
+                    <p class="card-text">Automated, data-driven irrigation minimizes waste and maximizes yield.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-info"><i class="bi bi-bar-chart-line-fill me-2"></i>Real-time Insights</h3>
+                    <p class="card-text">Monitor soil moisture, temperature, and more, right from your device.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h3 class="card-title text-primary"><i class="bi bi-phone-fill me-2"></i>Remote Control</h3>
+                    <p class="card-text">Manage your irrigation systems from anywhere in the world.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center my-5">
+    <h2>Ready to transform your farming?</h2>
+    <a class="btn btn-info btn-lg mt-3" href="{% url 'services' %}">Discover Our Services</a>
+    <a class="btn btn-secondary btn-lg mt-3 ms-3" href="{% url 'contact' %}">Contact Us</a>
+</div>
+{% endblock %}

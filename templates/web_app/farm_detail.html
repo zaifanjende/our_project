@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+{% block title %}Farm Details: {{ farm.name }}{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Farm Details: {{ farm.name }}</h2>
+
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+farm.water_tanks.all.
+
+<h3>Water Tanks for {{ farm.name }}</h3>
+{% if farm.water_tanks.all %}
+    <ul>
+    {% for tank in farm.water_tanks.all %}
+        <li>
+            <h4>{{ tank.tank_name }}</h4>
+            <p>Capacity: {{ tank.total_capacity_litres }} litres</p>
+            <p>Last Reading: {{ tank.last_reading_cm|default:"N/A" }} cm</p>
+            <p>Last Volume: {{ tank.last_volume_litres|default:"N/A" }} litres</p>
+            <p>Threshold (Low): {{ tank.low_level_threshold_cm }} cm</p>
+            <p>Threshold (Empty): {{ tank.empty_level_threshold_cm }} cm</p>
+            <p>Last Updated: {{ tank.last_updated|date:"Y-m-d H:i:s"|default:"N/A" }}</p>
+            <p>Status: {{ tank.status }}</p>
+
+            {# --- ADD THIS PUMP CONTROL SECTION --- #}
+            <p><strong>Pump Status:</strong>
+                {% if tank.pump_is_on %}
+                    <span style="color: green; font-weight: bold;">ON</span>
+                {% else %}
+                    <span style="color: red; font-weight: bold;">OFF</span>
+                {% endif %}
+                {% if tank.pump_manual_control %}
+                    (Manual Control)
+                {% endif %}
+            </p>
+
+            <form action="{% url 'toggle_pump' tank.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn {% if tank.pump_is_on %}btn-warning{% else %}btn-success{% endif %} btn-sm">
+                    {% if tank.pump_is_on %}Turn Pump OFF{% else %}Turn Pump ON{% endif %}
+                </button>
+            </form>
+            {# --- END PUMP CONTROL SECTION --- #}
+
+        </li>
+    {% empty %}
+        <li>No water tanks defined for this farm.</li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No water tanks for this farm.</p>
+{% endif %}
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ farm.name }} <span class="badge bg-info">{{ farm.system_status }}</span></h5>
+            <p class="card-text"><strong>Location:</strong> {{ farm.location }}</p>
+            <p class="card-text"><strong>Contact Person:</strong> {{ farm.contact_person }}</p>
+            <p class="card-text"><strong>Contact Number:</strong> {{ farm.contact_number }}</p>
+            <p class="card-text"><strong>Email:</strong> {{ farm.email }}</p>
+            <p class="card-text"><strong>Notes:</strong> {{ farm.notes|default:"N/A" }}</p>
+            <hr>
+            <a href="{% url 'farm_edit' pk=farm.pk %}" class="btn btn-primary me-2">Edit Farm</a>
+            <a href="{% url 'farm_delete' pk=farm.pk %}" class="btn btn-danger">Delete Farm</a>
+            <a href="{% url 'farm_list' %}" class="btn btn-secondary ms-2">Back to Farm List</a>
+        </div>
+    </div>
+
+    <h4>Farm Sections:</h4>
+<div class="mb-3">
+    <a href="{% url 'farm_section_list' farm_pk=farm.pk %}" class="btn btn-info">View & Manage Sections</a>
+    <a href="{% url 'farm_section_add' farm_pk=farm.pk %}" class="btn btn-success ms-2">Add New Section</a>
+</div>
+
+    <h4>Water Tanks:</h4>
+<div class="mb-3">
+    <a href="{% url 'water_tank_list' farm_pk=farm.pk %}" class="btn btn-info">View & Manage Water Tanks</a>
+    <a href="{% url 'water_tank_add' farm_pk=farm.pk %}" class="btn btn-success ms-2">Add New Water Tank</a>
+</div>
+
+    <h4>Recent Sensor Readings:</h4>
+    <div class="alert alert-warning">
+        Sensor readings for this farm will appear here soon!
+    </div>
+</div>
+{% endblock %}

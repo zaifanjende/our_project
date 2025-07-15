@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Contact Us - AgriFlow{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="text-center mb-4">Contact AgriFlow Support</h1>
+    <p class="text-center lead">We're here to help you with any questions about our smart irrigation system. Reach out to us!</p>
+
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow-sm p-4">
+                <h3 class="mb-3">Send us a Message</h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Your Name</label>
+                        <input type="text" class="form-control" id="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" class="form-control" id="subject" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Your Message</label>
+                        <textarea class="form-control" id="message" rows="5" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Message</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-md-6 mx-auto text-center">
+            <h3>Other Ways to Reach Us</h3>
+            <ul class="list-unstyled mt-3">
+                <li></i>Email: <a href="mailto:support@agriflow.com">agriflowwinners@gmail.com</a></li>
+                <li></i>Phone: +255 676 114 614 (Tanzania)</li>
+                <li></i>Address: P.O. BOX 1024 Chukwani, Zanzibar, Tanzania</li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

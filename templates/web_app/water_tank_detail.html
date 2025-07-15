@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block title %}Tank Details: {{ water_tank.tank_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Tank Details: {{ water_tank.tank_name }} ({{ farm.name }})</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ water_tank.tank_name }} <span class="badge bg-info">{{ water_tank.status }}</span></h5>
+            <p class="card-text"><strong>Farm:</strong> {{ water_tank.farm.name }}</p>
+            <p class="card-text"><strong>Total Capacity:</strong> {{ water_tank.total_capacity_litres }} Litres</p>
+            <p class="card-text"><strong>Low Level Threshold:</strong> {{ water_tank.low_level_threshold_cm }} cm</p>
+            <p class="card-text"><strong>Empty Level Threshold:</strong> {{ water_tank.empty_level_threshold_cm }} cm</p>
+            <p class="card-text"><strong>Sensor ECHO Pin:</strong> {{ water_tank.sensor_pin_echo|default:"N/A" }}</p>
+            <p class="card-text"><strong>Sensor TRIG Pin:</strong> {{ water_tank.sensor_pin_trig|default:"N/A" }}</p>
+            <hr>
+            <p class="card-text"><strong>Last Reading:</strong> {{ water_tank.last_reading_cm|default:"N/A" }} cm</p>
+            <p class="card-text"><strong>Last Volume:</strong> {{ water_tank.last_volume_litres|default:"N/A" }} Litres</p>
+            <p class="card-text"><strong>Last Updated:</strong> {{ water_tank.last_updated|date:"Y-m-d H:i"|default:"N/A" }}</p>
+            <hr>
+            <a href="{% url 'water_tank_edit' farm_pk=farm.pk pk=water_tank.pk %}" class="btn btn-primary me-2">Edit Tank</a>
+            <a href="{% url 'water_tank_delete' farm_pk=farm.pk pk=water_tank.pk %}" class="btn btn-danger">Delete Tank</a>
+            <a href="{% url 'water_tank_list' farm_pk=farm.pk %}" class="btn btn-secondary ms-2">Back to Tanks</a>
+        </div>
+    </div>
+
+    <h4>Associated Irrigation Events:</h4>
+    <div class="alert alert-warning">
+        Irrigation events using this tank will appear here soon!
+        <a href="#" class="alert-link disabled">View All Events</a>
+    </div>
+</div>
+{% endblock %}

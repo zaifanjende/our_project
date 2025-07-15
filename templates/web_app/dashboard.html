@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %} {# Ensure this is loaded if you use crispy forms elsewhere #}
+
+{% block title %}Dashboard - AgriFlow{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h1 class="mb-4">Welcome, {% if user.is_authenticated %}{{ user.username }}{% else %}Guest{% endif %}!</h1>
+    <p class="lead">Your central hub for managing all your farms and smart irrigation systems.</p>
+
+    <hr class="my-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Your Farms</h2>
+        <a href="{% url 'farm_add' %}" class="btn btn-success btn-lg">
+            <i class="bi bi-plus-circle-fill me-2"></i>Add New Farm
+        </a>
+    </div>
+
+    {% if farms %}
+        <div class="row">
+            {% for farm in farms %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 shadow-sm border-primary">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">{{ farm.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"><strong>Location:</strong> {{ farm.location }}</p>
+                        <p class="card-text"><strong>Description:</strong> {{ farm.description|default:"No description provided." }}</p>
+
+                        <h5 class="mt-3">Sections ({{ farm.farm_sections.count }})</h5>
+                        <ul class="list-group list-group-flush mb-3">
+                            {% for section in farm.farm_sections.all %} {# .all() ensures prefetch is used #}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'farm_section_detail' farm_pk=farm.pk pk=section.pk %}" class="text-decoration-none text-dark">{{ section.name }}</a>
+                                    {% with latest_reading=section.latest_sensor_reading.0 %} {# Access the first item from the prefetched list #}
+                                        {% if latest_reading %}
+                                            <span class="badge bg-secondary rounded-pill">
+                                                Moisture: {{ latest_reading.moisture_level }}%
+                                            </span>
+                                        {% else %}
+                                            <span class="badge bg-light text-secondary border">No Sensor Data</span>
+                                        {% endif %}
+                                    {% endwith %}
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-muted">No sections added yet.</li>
+                            {% endfor %}
+                        </ul>
+
+                        <h5 class="mt-3">Water Tanks ({{ farm.water_tanks.count }})</h5> {# CORRECTED: farm.water_tanks.count #}
+                        <ul class="list-group list-group-flush mb-3">
+                            {% for tank in farm.water_tanks.all %} {# CORRECTED: farm.water_tanks.all #}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <a href="{% url 'water_tank_detail' farm_pk=farm.pk pk=tank.pk %}" class="text-decoration-none text-dark">{{ tank.tank_name }}</a>
+                                    <span class="badge bg-{% if tank.pump_is_on %}success{% else %}danger{% endif %} rounded-pill">Pump: {{ tank.get_pump_is_on_display }}</span>
+                                </li>
+                            {% empty %}
+                                <li class="list-group-item text-muted">No water tanks added yet.</li>
+                            {% endfor %}
+                        </ul>
+
+                    </div>
+                    <div class="card-footer d-flex justify-content-between">
+                        <a href="{% url 'farm_detail' pk=farm.pk %}" class="btn btn-outline-primary btn-sm me-2">
+                            <i class="bi bi-info-circle me-1"></i>View Farm Details
+                        </a>
+                        <a href="{% url 'farm_section_add' farm_pk=farm.pk %}" class="btn btn-outline-info btn-sm me-2">
+                            <i class="bi bi-plus me-1"></i>Add Section
+                        </a>
+                        <a href="{% url 'water_tank_add' farm_pk=farm.pk %}" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-plus me-1"></i>Add Tank
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-info text-center" role="alert">
+            <h4 class="alert-heading">No Farms Found!</h4>
+            <p>It looks like you haven't added any farms yet. Let's get started!</p>
+            <hr>
+            <a href="{% url 'farm_add' %}" class="btn btn-info btn-lg">Add Your First Farm Now</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+

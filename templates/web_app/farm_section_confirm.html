@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirm Delete Section{% endblock %}
+
+{% block content %}
+<div class="container form-container text-center">
+    <h2 class="mb-4 text-danger">Confirm Deletion</h2>
+    <p class="lead">Are you sure you want to delete the section "<strong>{{ farm_section.name }}</strong>" from farm "<strong>{{ farm.name }}</strong>"?</p>
+    <p class="text-danger">This action cannot be undone and will delete all associated sensor readings and other data!</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger btn-lg me-3">Yes, Delete</button>
+        <a href="{% url 'farm_section_detail' farm_pk=farm.pk pk=farm_section.pk %}" class="btn btn-secondary btn-lg">No, Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Sensor Readings for {{ farm_section.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Sensor Readings for "{{ farm_section.name }}" ({{ farm.name }})</h2>
+
+    <p>
+        <a href="{% url 'farm_section_detail' farm_pk=farm.pk pk=farm_section.pk %}" class="btn btn-secondary">Back to Section Details</a>
+    </p>
+
+    {% if sensor_readings %}
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Moisture Level (%)</th>
+                    <th>Water Level (cm)</th>
+                    <th>Temperature (°C)</th>
+                    <th>Humidity (%)</th>
+                    <th>Light Intensity (lux)</th>
+                    <th>pH Level</th>
+                    <th>Pump Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for reading in sensor_readings %}
+                <tr>
+                    <td>{{ reading.timestamp|date:"Y-m-d H:i:s" }}</td>
+                    <td>{{ reading.moisture_level|default:"N/A" }}</td>
+                    <td>{{ reading.water_level|default:"N/A" }}</td>
+                    <td>{{ reading.temperature|default:"N/A" }}</td>
+                    <td>{{ reading.humidity|default:"N/A" }}</td>
+                    <td>{{ reading.light_intensity|default:"N/A" }}</td>
+                    <td>{{ reading.pH_level|default:"N/A" }}</td>
+                    <td>{{ reading.get_pump_status_display }}</td> {# Uses get_FOO_display for choices field #}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="alert alert-info" role="alert">
+        No sensor readings found for this farm section yet. Send data via the API!
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

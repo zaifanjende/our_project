@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}Section Details: {{ farm_section.name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Section Details: {{ farm_section.name }} ({{ farm.name }})</h2>
+
+    <div class="card mb-4">
+        <div class="card-body">
+            <h5 class="card-title">{{ farm_section.name }} <span class="badge bg-info">{{ farm_section.status }}</span></h5>
+            <p class="card-text"><strong>Farm:</strong> {{ farm_section.farm.name }}</p>
+            <p class="card-text"><strong>Area:</strong> {{ farm_section.area_sq_m }} sq.m.</p>
+            <p class="card-text"><strong>Plant Type:</strong> {{ farm_section.plant_type.name|default:"N/A" }}</p>
+            <p class="card-text"><strong>Notes:</strong> {{ farm_section.notes|default:"N/A" }}</p>
+            <hr>
+            <a href="{% url 'farm_section_edit' farm_pk=farm.pk pk=farm_section.pk %}" class="btn btn-primary me-2">Edit Section</a>
+            <a href="{% url 'farm_section_delete' farm_pk=farm.pk pk=farm_section.pk %}" class="btn btn-danger">Delete Section</a>
+        </div>
+        </div>
+
+        <hr> {# Add a separator #}
+    <h4>Sensor Data & Analytics:</h4>
+    <div class="mb-3">
+        <a href="{% url 'sensor_reading_list' farm_pk=farm.pk section_pk=farm_section.pk %}" class="btn btn-info">View Sensor Readings</a>
+        {# You might add a link to analytics/charts here later #}
+    </div>
+
+    {# ... (Existing bottom buttons) ... #}
+    <p class="mt-4">
+        <a href="{% url 'farm_section_list' farm_pk=farm.pk %}" class="btn btn-secondary">Back to Farm Sections</a>
+    </p>
+    </div>
+
+    <h4>Recent Sensor Readings for this Section:</h4>
+    <div class="alert alert-warning">
+        Sensor readings for this section will appear here soon!
+        <a href="#" class="alert-link disabled">View All Readings</a>
+    </div>
+
+    <h4>Associated Water Tanks:</h4>
+    <div class="alert alert-warning">
+        Water tanks associated with this section will appear here soon!
+        <a href="#" class="alert-link disabled">Manage Tanks</a>
+    </div>
+</div>
+{% endblock %}

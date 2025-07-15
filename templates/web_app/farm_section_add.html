@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Add Farm Section to {{ farm.name }}{% endblock %}
+
+{% block content %}
+<div class="container form-container">
+    <h2 class="text-center mb-4">Add New Farm Section to {{ farm.name }}</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success w-100 mt-3">Add Section</button>
+    </form>
+    <p class="text-center mt-3">
+        <a href="{% url 'farm_section_list' farm_pk=farm.pk %}" class="btn btn-outline-secondary">Cancel</a>
+    </p>
+</div>
+{% endblock %}
